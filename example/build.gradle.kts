@@ -8,6 +8,6 @@ java {
 }
 
 dependencies {
-    implementation(project(":core"))
-    annotationProcessor(project(":processor"))
+    implementation("com.github.sqyyy.jnb:core:0.1.0-alpha")
+    annotationProcessor("com.github.sqyyy.jnb:processor:0.1.0-alpha")
 }
