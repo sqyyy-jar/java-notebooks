@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Page {
     /**
-     * The name of the page
+     * The name of the page.
      *
      * @return the name of the page
      * @since v0.1.0-alpha
