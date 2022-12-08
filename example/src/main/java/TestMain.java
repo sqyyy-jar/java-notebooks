@@ -4,7 +4,7 @@ import com.github.sqyyy.jnb.Page;
 
 import java.lang.reflect.InvocationTargetException;
 
-@Page("""
+@Page(value = "Example-page", description = """
     This is an example-class testing the java notebooks annotation processing capabilities.
     """)
 public class TestMain {
