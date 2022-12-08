@@ -40,7 +40,7 @@ public class PageProcessor extends AbstractProcessor {
             metaFile.append("\"));\n");
         }
         Processors.writeMetaClass(processingEnv.getFiler(), "Pages", """
-                public static final List<Class<?>> $pages = new ArrayList();""", metaFile.toString(), "java.util.List",
+                public static final List<Class<?>> $pages = new ArrayList<>();""", metaFile.toString(), "java.util.List",
             "java.util.ArrayList");
         return false;
     }
