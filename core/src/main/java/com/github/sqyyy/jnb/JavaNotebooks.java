@@ -1,8 +1,10 @@
 package com.github.sqyyy.jnb;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Java Notebooks access-point.
@@ -13,14 +15,14 @@ import java.util.List;
 public class JavaNotebooks {
     private static final Class<?> entrypointsClass;
     private static final Class<?> pagesClass;
-    private static final List<Method> entrypointMethods;
+    private static final Map<Class<?>, MethodHandle> entrypointMethods;
     private static final List<Class<?>> pageClasses;
 
     static {
         try {
             entrypointsClass = Class.forName("$metadata.jnb.Entrypoints");
             pagesClass = Class.forName("$metadata.jnb.Pages");
-            entrypointMethods = (List<Method>) entrypointsClass.getDeclaredField("$entrypoints").get(null);
+            entrypointMethods = (Map<Class<?>, MethodHandle>) entrypointsClass.getDeclaredField("$entrypoints").get(null);
             pageClasses = (List<Class<?>>) pagesClass.getDeclaredField("$pages").get(null);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -32,9 +34,31 @@ public class JavaNotebooks {
      *
      * @return the list of methods annotated with {@link Entrypoint}
      * @since v0.1.0-alpha
+     * @deprecated this method will always return an empty list
      */
+    @Deprecated(forRemoval = true)
     public static List<Method> getEntrypointMethods() {
-        return Collections.unmodifiableList(entrypointMethods);
+        return List.of();
+    }
+
+    /**
+     * Gets the list of methods annotated with {@link Entrypoint}.
+     *
+     * @return the list of methods annotated with {@link Entrypoint}
+     * @since v0.2.0-alpha
+     */
+    public static List<MethodHandle> getEntrypointHandles() {
+        return List.copyOf(entrypointMethods.values());
+    }
+
+    /**
+     * Gets the list of methods annotated with {@link Entrypoint} mapped by their defining class.
+     *
+     * @return the map of methods annotated with {@link Entrypoint} mapped by their defining class
+     * @since v0.2.0-alpha
+     */
+    public static Map<Class<?>, MethodHandle> getEntrypoints() {
+        return Collections.unmodifiableMap(entrypointMethods);
     }
 
     /**
@@ -43,9 +67,23 @@ public class JavaNotebooks {
      * @param clazz the declaring class of the entrypoints
      * @return the list of methods annotated with {@link Entrypoint} in a given class
      * @since v0.1.4-alpha
+     * @deprecated this method will always return an empty list
      */
+    @Deprecated(forRemoval = true)
     public static List<Method> getEntrypointMethodsByClass(Class<?> clazz) {
-        return entrypointMethods.stream().filter(method -> method.getDeclaringClass() == clazz).toList();
+        return List.of();
+    }
+
+    /**
+     * Gets the method annotated with {@link Entrypoint} in a given class.
+     * Returns {@code null} if no entrypoint was found.
+     *
+     * @param clazz the declaring class of the entrypoint
+     * @return the {@link MethodHandle} of the method annotated with {@link Entrypoint} in a given class
+     * @since v0.2.0-alpha
+     */
+    public static MethodHandle getEntrypointByClass(Class<?> clazz) {
+        return entrypointMethods.get(clazz);
     }
 
     /**
