@@ -13,7 +13,7 @@ public class TestMain {
     }
 
     @Entrypoint
-    public static void start(String[] a) {
+    public static void start(String... a) {
         System.out.println("hi");
     }
 }
