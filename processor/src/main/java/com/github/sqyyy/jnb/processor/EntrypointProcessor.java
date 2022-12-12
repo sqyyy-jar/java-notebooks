@@ -78,7 +78,7 @@ public class EntrypointProcessor extends AbstractProcessor {
             if (entrypointMethod.args()) {
                 metaFile.append(", MethodType.methodType(void.class, String[].class)");
             }
-            metaFile.append(");\n$entrypoints.put(var0, var1);\n");
+            metaFile.append(").asFixedArity();\n$entrypoints.put(var0, var1);\n");
         }
         Processors.writeMetaClass(processingEnv.getFiler(), "Entrypoints",
             "public static final Map<Class<?>, MethodHandle> $entrypoints = new HashMap<>();", metaFile.toString(),
