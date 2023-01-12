@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.github.sqyyy.jnb"
-    version = "0.2.1-alpha"
+    version = "0.3.0-alpha"
 
     repositories {
         mavenCentral()
