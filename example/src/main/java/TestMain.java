@@ -8,7 +8,11 @@ import com.github.sqyyy.jnb.Page;
 public class TestMain {
     public static void main(String[] args) throws Throwable {
         for (var it : JavaNotebooks.getEntrypointHandles()) {
-            it.invoke((Object) new String[0]);
+            if (it.type().parameterCount() == 1) {
+                it.invoke((Object) new String[0]);
+            } else {
+                it.invoke();
+            }
         }
     }
 
