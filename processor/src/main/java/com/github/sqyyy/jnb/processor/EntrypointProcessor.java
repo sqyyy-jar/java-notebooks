@@ -11,6 +11,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import java.util.ArrayList;
@@ -46,6 +47,9 @@ public class EntrypointProcessor extends AbstractProcessor {
             if (!method.getModifiers().contains(Modifier.PUBLIC) || !method.getModifiers().contains(Modifier.STATIC)) {
                 throw new IllegalSignatureException("Entrypoint '" + methodName + "' must be public and static");
             }
+            if (TypeKind.VOID != method.getReturnType().getKind()) {
+                throw new IllegalSignatureException("Entrypoint '" + methodName + "' must return void");
+            }
             final List<? extends VariableElement> parameters = method.getParameters();
             if (parameters.size() > 1) {
                 throw new IllegalSignatureException(
@@ -74,11 +78,11 @@ public class EntrypointProcessor extends AbstractProcessor {
             metaFile.append(entrypointMethod.clazz());
             metaFile.append("\");\nvar1 = lookup.findStatic(var0, \"");
             metaFile.append(entrypointMethod.method());
-            metaFile.append('"');
+            metaFile.append("\", MethodType.methodType(void.class");
             if (entrypointMethod.args()) {
-                metaFile.append(", MethodType.methodType(void.class, String[].class)");
+                metaFile.append(", String[].class");
             }
-            metaFile.append(").asFixedArity();\n$entrypoints.put(var0, var1);\n");
+            metaFile.append(")).asFixedArity();\n$entrypoints.put(var0, var1);\n");
         }
         Processors.writeMetaClass(processingEnv.getFiler(), "Entrypoints",
             "public static final Map<Class<?>, MethodHandle> $entrypoints = new HashMap<>();", metaFile.toString(),
