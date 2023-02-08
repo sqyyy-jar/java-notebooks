@@ -129,7 +129,6 @@ public class JavaNotebooks {
         try (var metaFile = JavaNotebooks.class.getClassLoader()
             .getResourceAsStream("metadata.jnb.json")) {
             if (metaFile == null) {
-                System.out.println("No metafile found");
                 return;
             }
             var metadata = Json.read(new String(metaFile.readAllBytes(), StandardCharsets.UTF_8));
