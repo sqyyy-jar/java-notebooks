@@ -28,4 +28,5 @@ configure<PublishingExtension> {
 
 dependencies {
     implementation(project(":core"))
+    implementation("org.sharegov:mjson:1.4.0")
 }
